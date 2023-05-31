@@ -131,6 +131,7 @@ jobs:
 
       - name: Build Docker image
         run: |
+        echo "Building Docker image"
         docker ps -a
         # List all docker containers, running and stopped
         docker build .
