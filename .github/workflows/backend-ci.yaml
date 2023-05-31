@@ -1,0 +1,100 @@
+#
+# https://www.cloudtechsimplified.com/beginners-guide-to-github-actions/
+#
+name: backend-ci.yml - lint, test, build
+
+on:
+  workflow_dispatch:
+
+  pull_request:
+    # A Continuous Integration workflow that:
+    # Runs on pull_requests against the main branch,only when code in the frontend application changes.
+    # Is able to be run on-demand, manually without needing to push code
+    branches: [main]
+    #  - main
+    paths:
+      - 'backend/**'       # ? - 'frontend/**'
+    # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request
+    types: [opened, reopened]
+
+
+jobs:
+  lint-bci:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: backend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: pipenv installation
+        run: pip install pipenv
+
+      - name: Caching python
+        id: cache-python
+        uses: actions/cache@v3
+        with:
+          path: ~/.local/share/virtualenvs  
+          key: python-${{ runner.os }}-${{ hashFiles('**/Pipfile.lock') }}
+          # The “key” part of the cache uniquely identify each version of our cache.
+
+      - name: Install dependencies
+        run: pipenv install --dev
+
+      - name: Linting backend
+        run: pipenv run lint
+
+  test-bci:
+    name: Backend code testing
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: backend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install pipenv
+        run: pip install pipenv
+
+      - name: Cache dependencies
+        id: cache-python
+        uses: actions/cache@v3
+        with:
+          path: ~/.local/share/virtualenvs
+          # For Python pipenv, cache files are stored in `~/.local/share/virtualenvs`
+          key: python-${{ runner.os }}-${{ hashFiles('**/Pipfile.lock') }}
+
+      - name: Install dependencies
+        run: pipenv install --dev
+
+      - name: Run backend CI test
+        run: pipenv run test
+
+  build:
+    name: Build backend CI job
+    runs-on: ubuntu-latest
+    # Runs the following tasks in parallel: lint, test
+    # Runs a build job only if the lint and test jobs succeed
+    # All jobs run in parallel, unless specified otherwise.
+    #
+    needs: [lint-bci, test-bci]
+    if: success()
+    defaults:
+      run:
+        shell: bash
+        working-directory: backend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build docker image
+        # Build the image
+        run: docker build .
+        #run: docker build --tag mp-backend:latest .
+        # Run the image
+        #run: docker run -p 5000:5000 --name mp-backend -d mp-backend
+

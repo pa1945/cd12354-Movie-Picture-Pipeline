@@ -1,0 +1,158 @@
+name: Backend Continuous Deployment
+
+on:
+  workflow_dispatch:
+
+  push:
+    # A Continuous Deployment workflow that:
+    # Runs on push against the main branch, only when code in the frontend application changes.
+    # Is able to be run on-demand, manually without needing to push code
+    branches:
+      - main
+    paths:
+      - 'backend/**'     # ? - 'frontend/**'
+    types: [opened, reopened]
+
+env:
+  #IMAGE_NAME: backend
+  COMPONENT_NAME: backend-cd
+  #DEPLOYMENT_NAME: backend
+  DEPLOY: backend-cd
+  #EKS_CLUSTER_NAME: cluster
+  CLUSTER: movie
+
+jobs:
+  lint:
+    name: Lint CD job
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: backend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install pipenv
+        run: pip install pipenv
+
+      - name: Cache dependencies
+        id: py-cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.local/share/virtualenvs
+          key: python-${{ hashFiles('**/Pipfile.lock') }}
+          # The “key” part of the cache uniquely identify each version of our cache.
+
+      - name: Install dependencies
+        run: pipenv install --dev
+
+      - name: Run lint
+        run: pipenv run lint
+
+  test:
+    name: Test CD job
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: backend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install pipenv
+        run: pip install pipenv
+
+      - name: Cache dependencies
+        id: py-cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.local/share/virtualenvs
+          key: python-${{ hashFiles('**/Pipfile.lock') }}
+          # The “key” part of the cache uniquely identify each version of our cache.
+
+      - name: Install dependencies
+        run: pipenv install --dev
+
+      - name: Run CD test
+        run: pipenv run test
+
+  build:
+    name: Build CD job
+    runs-on: ubuntu-latest
+    needs: [lint, test]
+    if: success()
+    defaults:
+      run:
+        shell: bash
+        working-directory: backend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build the docker image
+        run: |
+          docker build \
+            -t $COMPONENT_NAME:${{ github.sha }} \
+            .
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+          # aws-region: ${{ secrets.AWS_REGION }}
+          #aws-region: us-east-1
+          #Alternaiv: us-east-2, us-west-1 or us-west-2.
+
+
+      - name: Login to Amazon ECR Private
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Buld, tag, and push docker image to Amazon ECR
+        # Publish the docker image to ECR
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          #docker tag $COMPONENT_NAME:${GITHUB_SHA::7} $REGISTRY/$COMPONENT_NAME:${GITHUB_SHA::7}
+          #docker push $REGISTRY/$COMPONENT_NAME:${GITHUB_SHA::7}
+          docker tag $COMPONENT_NAME:${ github.sha } $REGISTRY/$COMPONENT_NAME:${{ github.sha }}
+          docker push $REGISTRY/$COMPONENT_NAME:${{ github.sha }}
+
+      #- name: AI: Push Docker image to ECR
+      #  run: |
+      #    docker tag your-docker-repo/frontend:${{ github.sha }} your-aws-account-number.dkr.ecr.your-aws-region.amazonaws.com/frontend:${{ github.sha }}
+      #    docker push your-aws-account-number.dkr.ecr.your-aws-region.amazonaws.com/frontend:${{ github.sha }}
+
+      - name: Authenticate with Kubernetes - Create Kubeconfig Auth file
+        run: |
+          kubectl config view   # Display the contents of the kubeconfig file
+          aws eks update-kubeconfig --name $CLUSTER --region ${{ vars.AWS_REGION }}
+          kubectl config view   # Display the contents of the kubeconfig file
+
+      - name: Deploy the Docker image to AWS Kubernetes cluster - EKS
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        run: |
+          cd k8s
+          # Check that kubectl is properly configured by getting the cluster state:
+          kubectl cluster-info
+          kubectl config view   #Display the contents of the kubeconfig file
+          #kustomize edit set image backend=$REGISTRY/$COMPONENT_NAME:${GITHUB_SHA::7}
+          kustomize edit set image backend=$REGISTRY/$COMPONENT_NAME:${{ github.sha }}
+          kustomize build . | kubectl apply -f -
+          # check if the Deployment was created.
+          # https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+          kubectl get deployments
+          #kubectl rollout status deployment/$DEPLOY
+          #kubectl get services -o wide
+          kubectl rollout status deployment/$DEPLOY
+          #
+          # Checking the resources in the Kubernetes cluster.
+          kubectl get nodes # Get the list of nodes in the cluster
+          kubectl get services
+          kubectl get pods
