@@ -11,7 +11,7 @@ on:       # Trigger
         required: true
         default: 'warning'
       tags:
-        description: 'Test scenario tags'  
+        description: 'PAF - Test scenario tags'  
 
   pull_request:
     # A Continuous Integration workflow file that:
@@ -139,5 +139,8 @@ jobs:
         #run: docker run --name mp-frontend -p 3000:3000 -d mp-frontend
         # AI:
         #run: docker build --build-arg REACT_APP_MOVIE_API_URL=$REACT_APP_MOVIE_API_URL -t my-image:latest .
+        echo "docker images"
+        docker images
+        
 
 
