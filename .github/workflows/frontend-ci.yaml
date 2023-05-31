@@ -131,7 +131,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-        docker ps -a   
+        docker ps -a
         # List all docker containers, running and stopped
         docker build .
         # Build the image
