@@ -134,9 +134,9 @@ jobs:
           echo "------------"
           pwd
           ls -als
-          #echo "--- List all docker containers, running and stopped ---"
-          docker ps          # List all docker containers, running and stopped
-          docker container ls # List all docker containers, running and stopped
+          echo "--- List all docker containers, punning and ftopped ---"
+          docker ps --all     # List all docker containers, running and stopped
+          #docker container ls # List all docker containers, running and stopped
           echo "--- Buildinp Docker imafe ---"
           docker build . --file Dockerfile --tag=mp-frontend:latest
           # Build the image
@@ -145,6 +145,6 @@ jobs:
           #run: docker run --name mp-frontend -p 3000:3000 -d mp-frontend
           # AI:
           #run: docker build --build-arg REACT_APP_MOVIE_API_URL=$REACT_APP_MOVIE_API_URL -t my-image:latest .
-          echo "docker images"
+          echo "--- docker images ---"
           docker images  # docker images
-          docker ps      # list the running containers
+          #docker ps      # list the running containers
