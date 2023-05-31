@@ -131,7 +131,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          #
+          echo "------------"
           ls -als
           echo "Building Docker image"
           docker ps -a
