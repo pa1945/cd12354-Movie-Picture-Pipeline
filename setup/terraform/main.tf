@@ -275,7 +275,8 @@ resource "aws_codebuild_project" "codebuild" {
 
   source {
     type            = "GITHUB"
-    location        = "https://github.com/your-org/your-repo"
+    # location        = "https://github.com/your-org/your-repo"
+    location        = "https://github.com/pa1945/cd12354-Movie-Picture-Pipeline"
     git_clone_depth = 1
     buildspec       = "buildspec.yml"
   }
@@ -312,15 +313,23 @@ resource "aws_iam_role_policy_attachment" "codebuild" {
 ####################
 # Github Action role
 ####################
+#
 resource "aws_iam_user" "github_action_user" {
   name = "github-action-user"
 }
 
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_user_policy1
+# Provides an IAM policy attached to a user.
+#
 resource "aws_iam_user_policy" "github_action_user_permission" {
   user   = aws_iam_user.github_action_user.name
   policy = data.aws_iam_policy_document.github_policy.json
 }
 
+# https://registry.terraform.io/providers/aaronfeng/aws/latest/docs/data-sources/iam_policy_document
+# Generates an IAM policy document in JSON format for use with resources that 
+#  expect policy documents such as `aws_iam_policy`.
+# 
 data "aws_iam_policy_document" "github_policy" {
   statement {
     effect    = "Allow"
@@ -328,3 +337,4 @@ data "aws_iam_policy_document" "github_policy" {
     resources = ["*"]
   }
 }
+
