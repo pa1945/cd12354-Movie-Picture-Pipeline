@@ -1,0 +1,143 @@
+#
+# https://www.cloudtechsimplified.com/beginners-guide-to-github-actions/
+#
+name: frontend-ci.yml - lint, test, build
+
+on:       # Trigger
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'     
+        required: true
+        default: 'warning'
+      tags:
+        description: 'Test scenario tags'  
+
+  pull_request:
+    # A Continuous Integration workflow file that:
+    # Is __triggered__ on `pull_requests` events against the `main` branch
+    #  1.Only when code in the frontend application changes
+    #  2. Can be run on-demand, i.e. manually without needing to push code.
+    branches: [main]
+    #  - main
+    paths:
+      - 'frontend/**'
+
+    # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request
+    types: [opened, reopened]
+      #- opened         # pull request is created
+      #- reopened       # closed pull request is reopened
+
+jobs:
+  lint-fci:
+    name: Lint frontend CI job
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: frontend
+    steps:
+      - name: Checkout the code repository
+        uses: actions/checkout@v3
+
+      - name: Listing contents after checkout
+        run: |
+          pwd
+          ls
+
+      - name: 1-Setup NodeJS - config
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: 2-Cache node modules 
+        # https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows#example-using-the-cache-action
+        # Perform a cache action to restore cache before dependency install
+        id: cache-npm
+        uses: actions/cache@v3
+        with:
+          # npm cache files are stored in `~/.npm` 
+          # You can specify absolute paths, or paths relative to the workspace directory.
+          path: ~/.npm
+          # For npm, cache files are stored in `~/.npm` on Posix
+          key: node-modules-${{ hashFiles('**/package-lock.json') }}
+          # https://docs.github.com/en/actions/learn-github-actions/expressions#hashfiles
+
+      - name: 3-Install dependencies
+        run: npm ci
+        # 'npm ci' is used in automated environments.
+
+      - name: 4-Run linting
+        run: |
+          pwd
+          ls
+          npm run lint
+
+  test-fci:
+    name: Testing frontend CI job
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: frontend
+    steps:
+      - name: Checkout the code repository
+        uses: actions/checkout@v3
+
+      - name: 1-Setup nodejs
+        # ensure you run actions/setup-node first before actions/cache
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: 2-Cache node modules dependencies
+        # Perform a cache action to restore cache before dependency install (npm ci)
+        id: cache-npm
+        uses: actions/cache@v3
+        with:
+          # caching node_modules
+          path: ~/.npm
+          # this path can be an absolute path or a relative path
+          key: node-modules-${{ hashFiles('**/package-lock.json') }}
+          # The “key” part of the cache uniquely identify each version of our cache.
+          # It is not recommended to cache node_modules, 
+          #  as it can break across Node versions and won't work with npm ci
+
+      - name: 3-Clean Install dependencies
+        run: npm ci
+
+      - name: 4-Run test
+        run: npm run test
+        #run: CI=true npm run test
+        #https://docs.github.com/en/actions/learn-github-actions/variables
+        # CI: Always set to true.
+
+  build:
+    name: Build frontend CI job
+    runs-on: ubuntu-latest
+    # Runs the following tasks in parallel: lint, test
+    # Runs a build job only if the lint and test jobs succeed
+    # All jobs run in parallel, unless specified otherwise.
+    #
+    needs: [lint-fci, test-fci]
+    if: success()
+    defaults:
+      run:
+        shell: bash
+        working-directory: frontend
+    steps:
+      - name: Checkout the code repository
+        uses: actions/checkout@v3
+
+      - name: Build Docker image
+        run: |
+        docker build .
+        docker ps -a   # List all docker containers, running and stopped
+        # Build the image
+        #run: docker build --build-arg REACT_APP_MOVIE_API_URL=http://localhost:5000 --tag=mp-frontend:latest .
+        # Run the image
+        #run: docker run --name mp-frontend -p 3000:3000 -d mp-frontend
+        # AI:
+        #run: docker build --build-arg REACT_APP_MOVIE_API_URL=$REACT_APP_MOVIE_API_URL -t my-image:latest .
+
+
