@@ -175,6 +175,7 @@ jobs:
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
+          pwd
           ls -asl 
           cd k8s
           # Check that kubectl is properly configured by getting the cluster state:
