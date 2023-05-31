@@ -1,7 +1,7 @@
 #
 # https://www.cloudtechsimplified.com/beginners-guide-to-github-actions/
 #
-name: frontend-ci.yml - lint, test, build
+name: Frontend CI - lint, test, build
 
 on:       # Trigger
   workflow_dispatch:
@@ -132,10 +132,12 @@ jobs:
       - name: Build Docker image
         run: |
           echo "------------"
+          pwd
           ls -als
-          echo "Building Docker image"
-          docker ps -a
-          # List all docker containers, running and stopped
+          #echo "--- List all docker containers, running and stopped ---"
+          docker ps          # List all docker containers, running and stopped
+          docker container ls # List all docker containers, running and stopped
+          echo "--- Buildinp Docker imafe ---"
           docker build . --file Dockerfile --tag=mp-frontend:latest
           # Build the image
           #run: docker build --build-arg REACT_APP_MOVIE_API_URL=http://localhost:5000 --tag=mp-frontend:latest .
@@ -144,4 +146,5 @@ jobs:
           # AI:
           #run: docker build --build-arg REACT_APP_MOVIE_API_URL=$REACT_APP_MOVIE_API_URL -t my-image:latest .
           echo "docker images"
-          docker images
+          docker images  # docker images
+          docker ps      # list the running containers
