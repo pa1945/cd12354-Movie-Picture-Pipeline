@@ -1,4 +1,5 @@
-name: Backend Continuous Deployment
+#
+name: Backend CD - Continuous Deployment
 
 on:
   workflow_dispatch:

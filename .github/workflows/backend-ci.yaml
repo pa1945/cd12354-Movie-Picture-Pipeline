@@ -94,8 +94,20 @@ jobs:
 
       - name: Build docker image
         # Build the image
-        run: docker build .
-        #run: docker build --tag mp-backend:latest .
-        # Run the image
-        #run: docker run -p 5000:5000 --name mp-backend -d mp-backend
+        run: |
+          #echo "--- docker search ---"
+          #docker search --limit 3 $COMPONENT_NAME:${{ github.sha }}
+          echo "--- List all docker containers, punning and ftopped ---"
+          docker ps --all     # List all docker containers, running and stopped
+          echo "--- docker images ---"
+          docker images
+          echo "--- TESTING_VAR: ---"
+          echo ${{ vars.TESTING_VAR }}
+          echo "--- docker build ---"
+          docker build . --tag mp-backend:latest
+          echo "--- docker images ---"
+          docker images
+          #run: docker build --tag mp-backend:latest .
+          # Run the image
+          #run: docker run -p 5000:5000 --name mp-backend -d mp-backend
 
