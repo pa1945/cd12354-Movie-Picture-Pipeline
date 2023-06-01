@@ -21,6 +21,7 @@ env:
   #IMAGE_NAME: backend
   COMPONENT_NAME: backend-ci
   SHA7: ${GITHUB_SHA:0:7}
+  SHA8: ${GITHUB_SHA:0:7}
 
 jobs:
   lint-bci:
