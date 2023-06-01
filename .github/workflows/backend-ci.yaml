@@ -22,7 +22,7 @@ env:
   COMPONENT_NAME: backend-ci
   #
   #SHA7: ${GITHUB_SHA:0:7}
-  #SHA8: ${GITHUB_SHA:0:7}
+  SHA8: ${{ GITHUB_SHA:0:7 }}
 
 jobs:
   lint-bci:
@@ -103,6 +103,7 @@ jobs:
         run: |
           #
           echo GITHUB_SHA: "${GITHUB_SHA}"
+          echo SHA8: $SHA8
           #echo "--- docker search ---"
           #docker search --limit 3 $COMPONENT_NAME:${{ github.sha }}
           #
