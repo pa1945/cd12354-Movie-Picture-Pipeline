@@ -120,7 +120,7 @@ jobs:
           echo "--- docker images ---"
           docker images
           echo "--- docker build ---"
-          docker build --tag $COMPONENT_NAME:${ github.sha } .
+          docker build --tag $COMPONENT_NAME:${{ github.sha }} .
           echo "--- docker images ---"
           docker images
           # Already declared inside the Dockerfile
