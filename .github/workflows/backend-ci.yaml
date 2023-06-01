@@ -17,6 +17,10 @@ on:
     # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request
     types: [opened, reopened]
 
+env:
+  #IMAGE_NAME: backend
+  COMPONENT_NAME: backend-ci
+  SHA7: ${GITHUB_SHA:0:7}
 
 jobs:
   lint-bci:
@@ -95,6 +99,8 @@ jobs:
       - name: Build docker image
         # Build the image
         run: |
+          echo SHA7: "${SHA7}"
+          echo GITHUB_SHA: "${GITHUB_SHA}"
           #echo "--- docker search ---"
           #docker search --limit 3 $COMPONENT_NAME:${{ github.sha }}
           echo "--- List all docker containers, punning and ftopped ---"
@@ -104,7 +110,9 @@ jobs:
           echo "--- TESTING_VAR: ---"
           echo ${{ vars.TESTING_VAR }}
           echo "--- docker build ---"
-          docker build . --tag mp-backend:latest
+          #docker build . --tag mp-backend:latest
+          #docker build -t $COMPONENT_NAME:${{ github.sha }} .
+          docker build -t $COMPONENT_NAME:$SHA7 .
           echo "--- docker images ---"
           docker images
           #run: docker build --tag mp-backend:latest .
