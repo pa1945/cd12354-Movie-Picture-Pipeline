@@ -20,8 +20,8 @@ on:
 env:
   #IMAGE_NAME: backend
   COMPONENT_NAME: backend-ci
-  SHA7: ${GITHUB_SHA:0:7}
-  SHA8: ${GITHUB_SHA:0:7}
+  #SHA7: ${GITHUB_SHA:0:7}
+  #SHA8: ${GITHUB_SHA:0:7}
 
 jobs:
   lint-bci:
@@ -115,6 +115,7 @@ jobs:
           echo "--- docker build ---"
           #docker build . --tag mp-backend:latest
           docker build -t $COMPONENT_NAME:${{ github.sha }} .
+          #
           #docker build -t $COMPONENT_NAME:${{ SHA7 }} .
           echo "--- docker images ---"
           docker images
