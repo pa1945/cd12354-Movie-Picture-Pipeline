@@ -103,7 +103,7 @@ jobs:
         run: |
           #
           echo GITHUB_SHA: "${GITHUB_SHA}"
-          echo GITHUB_SHA: "${ GITHUB_SHA:0:7 }"
+          #echo GITHUB_SHA: "${GITHUB_SHA:0:7}"
           #echo SHA8: $SHA8
           #echo "--- docker search ---"
           #docker search --limit 3 $COMPONENT_NAME:${{ github.sha }}
