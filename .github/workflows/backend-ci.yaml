@@ -20,6 +20,7 @@ on:
 
 jobs:
   lint-bci:
+    name: Backend CI Linting
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -47,7 +48,7 @@ jobs:
         run: pipenv run lint
 
   test-bci:
-    name: Backend code testing
+    name: Backend CI code testing
     runs-on: ubuntu-latest
     defaults:
       run:
