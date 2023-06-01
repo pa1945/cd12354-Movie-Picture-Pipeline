@@ -1,7 +1,7 @@
 #
 # https://www.cloudtechsimplified.com/beginners-guide-to-github-actions/
 #
-name: backend-ci.yml - lint, test, build
+name: Backend CI - lint, test, build
 
 on:
   workflow_dispatch:
