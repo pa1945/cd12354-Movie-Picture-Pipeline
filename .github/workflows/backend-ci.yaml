@@ -101,7 +101,7 @@ jobs:
         # Build the image
         run: |
           #
-          echo SHA7: "${SHA7}"
+          #echo SHA7: "${SHA7}"
           #echo SHA8: "${ SHA8 }"
           echo GITHUB_SHA: "${GITHUB_SHA}"
           #echo "--- docker search ---"
