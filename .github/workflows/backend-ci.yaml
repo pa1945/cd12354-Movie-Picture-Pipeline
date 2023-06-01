@@ -115,7 +115,7 @@ jobs:
           echo "--- docker build ---"
           #docker build . --tag mp-backend:latest
           #docker build -t $COMPONENT_NAME:${{ github.sha }} .
-          docker build -t $COMPONENT_NAME:${{ SHA8 }} .
+          docker build -t $COMPONENT_NAME:${{ SHA7 }} .
           echo "--- docker images ---"
           docker images
           #run: docker build --tag mp-backend:latest .
