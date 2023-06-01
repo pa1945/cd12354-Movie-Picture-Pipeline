@@ -32,7 +32,7 @@ env:
   #EKS_CLUSTER_NAME: cluster
   CLUSTER: movie
   #
-  SHA7: ${GITHUB_SHA:0:7}
+  #SHA7: ${GITHUB_SHA:0:7}
 
 jobs:
   lint-cd:
@@ -113,10 +113,15 @@ jobs:
         env:
           REACT_APP_MOVIE_API_URL: ${{ vars.REACT_APP_MOVIE_API_URL }}
         run: |
-          echo SHA7: "${SHA7}"
+          #echo SHA7: "${SHA7}"
           echo GITHUB_SHA: "${GITHUB_SHA}"
           echo "REACT_APP_MOVIE_API_URL: ${REACT_APP_MOVIE_API_URL}"
+          echo "--- docker images ---"
+          docker images
+          echo "--- docker build ---"
           docker build --tag $COMPONENT_NAME:${ github.sha } .
+          echo "--- docker images ---"
+          docker images
           # Already declared inside the Dockerfile
           #--build-arg REACT_APP_MOVIE_API_URL="http://$REACT_APP_MOVIE_API_URL" \
           #.

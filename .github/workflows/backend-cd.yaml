@@ -94,9 +94,14 @@ jobs:
 
       - name: Build the docker image
         run: |
+          echo "--- docker images ---"
+          docker images
+          echo "--- docker build ---"
           docker build \
             -t $COMPONENT_NAME:${{ github.sha }} \
             .
+          echo "--- docker images ---"
+          docker images
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
