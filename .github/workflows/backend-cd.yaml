@@ -102,6 +102,10 @@ jobs:
             .
           echo "--- docker images ---"
           docker images
+          echo "--- Review logs ---"
+          docker logs -f $COMPONENT_NAME:${{ github.sha }}
+          #echo "--- Stop de application"
+          #docker stop
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
