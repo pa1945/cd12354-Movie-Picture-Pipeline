@@ -3,7 +3,8 @@
 #
 name: Frontend CI - lint, test, build
 
-on:       # Trigger
+on:       # Triggers
+  # To manually trigger a workflow, it must be configured with workflow_dispatch
   workflow_dispatch:
     inputs:
       logLevel:
