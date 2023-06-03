@@ -82,7 +82,7 @@ jobs:
         run: pipenv run test
 
   build:
-    name: Build backend CI job
+    name: Backend CI build job
     runs-on: ubuntu-latest
     # Runs the following tasks in parallel: lint, test
     # Runs a build job only if the lint and test jobs succeed
