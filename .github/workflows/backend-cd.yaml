@@ -113,7 +113,7 @@ jobs:
           #
           echo "--- List image $COMPONENT_NAME:${{ github.sha }} ---"
           docker images $COMPONENT_NAME:${{ github.sha }}
-          echo "--- Liste image $COMPONENT_NAME:${{ github.sha }} above ---"
+          echo "--- List image $COMPONENT_NAME:${{ github.sha }} above ---"
           #echo "--- Stop de application"
           #docker stop
 
