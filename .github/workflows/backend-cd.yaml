@@ -107,9 +107,13 @@ jobs:
           echo "--- Check the running application ---"
           #curl http://localhost:5000/movies
           #
-          echo "--- Review logs for image tagged $COMPONENT_NAME:${{ github.sha }} ---"
-          docker logs -f $COMPONENT_NAME:${{ github.sha }}
-          echo "--- Question: Found the image above above ---"
+          #echo "--- Review logs for image tagged $COMPONENT_NAME:${{ github.sha }} ---"
+          #docker logs -f $COMPONENT_NAME:${{ github.sha }} # Valid for containers
+          #echo "--- Question: Found the image above above ---"
+          #
+          echo "--- List image $COMPONENT_NAME:${{ github.sha }} ---"
+          docker images $COMPONENT_NAME:${{ github.sha }}
+          echo "--- Liste image $COMPONENT_NAME:${{ github.sha }} above ---"
           #echo "--- Stop de application"
           #docker stop
 
