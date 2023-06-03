@@ -24,7 +24,7 @@ env:
 
 jobs:
   lint:
-    name: Backend Lint CD job
+    name: Backend CD Lint job
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -52,7 +52,7 @@ jobs:
         run: pipenv run lint
 
   test:
-    name: Backend Test CD job
+    name: Backend CD test job
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -80,7 +80,7 @@ jobs:
         run: pipenv run test
 
   build:
-    name: Backend Build CD job
+    name: Backend CD Build job
     runs-on: ubuntu-latest
     needs: [lint, test]
     if: success()
