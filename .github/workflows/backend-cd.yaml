@@ -19,8 +19,8 @@ env:
   COMPONENT_NAME: backend-cd
   #DEPLOYMENT_NAME: backend
   DEPLOY: backend-cd
-  #EKS_CLUSTER_NAME: cluster
-  CLUSTER: movie
+  #EKS_CLUSTER_NAME: cluster-mov-pic
+  CLUSTER: cluster-mov-pic
 
 jobs:
   lint:

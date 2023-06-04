@@ -30,7 +30,7 @@ env:
   DEPLOY: frontend
   #
   #EKS_CLUSTER_NAME: cluster
-  CLUSTER: movie
+  CLUSTER: cluster-mov-pic
   #
   #SHA7: ${GITHUB_SHA:0:7}
 
@@ -109,7 +109,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Build the docker image
+      - name: Build docker image
         env:
           REACT_APP_MOVIE_API_URL: ${{ vars.REACT_APP_MOVIE_API_URL }}
           # REACT_APP_MOVIE_API_URL=http://localhost:5000
