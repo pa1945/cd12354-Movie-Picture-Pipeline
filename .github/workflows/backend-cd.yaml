@@ -20,7 +20,7 @@ env:
   #DEPLOYMENT_NAME: backend
   DEPLOY: backend-cd
   #EKS_CLUSTER_NAME: cluster-mov-pic
-  #CLUSTER: pafcluster-mov-pic
+  #CLUSTER: pafcluster-mov-pic   # Defined in 'main.tf'
   CLUSTER: cluster
 
 jobs:
@@ -123,7 +123,8 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+          #aws-region: ${{ secrets.AWS_REGION }}
           #aws-region: ${{ vars.AWS_REGION }}
           #aws-region: us-east-1
           #Alternaiv: us-east-2, us-west-1 or us-west-2.

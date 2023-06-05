@@ -151,7 +151,7 @@ jobs:
         run: |
           # Search Hub for an image
           #docker search --limit 3 mp-frontend
-          #X docker search --limit 3 $COMPONENT_NAME:${{ github.sha }}
+          #XX docker search --limit 3 $COMPONENT_NAME:${{ github.sha }}
           # Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
           #? Is it necessary this when the build was in this workflow?
           #docker tag $COMPONENT_NAME:${{ github.sha }} $REGISTRY/$COMPONENT_NAME:${{ github.sha }}
