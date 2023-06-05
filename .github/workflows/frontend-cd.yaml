@@ -30,7 +30,7 @@ env:
   DEPLOY: frontend
   #
   #EKS_CLUSTER_NAME: cluster
-  #CLUSTER: pafcluster-mov-pic
+  #CLUSTER: pafcluster-mov-pic  # Defined in 'main.tf'
   CLUSTER: cluster
   #
   #SHA7: ${GITHUB_SHA:0:7}
@@ -134,7 +134,8 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}         
+          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}         
+          #aws-region: ${{ secrets.AWS_REGION }}         
           #aws-region: ${{ vars.AWS_REGION }}
           #aws-region: us-east-1
           #Alternaiv: us-east-2, us-west-1 or us-west-2.
@@ -150,7 +151,7 @@ jobs:
         run: |
           # Search Hub for an image
           #docker search --limit 3 mp-frontend
-          docker search --limit 3 $COMPONENT_NAME:${{ github.sha }}
+          #X docker search --limit 3 $COMPONENT_NAME:${{ github.sha }}
           # Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
           #? Is it necessary this when the build was in this workflow?
           #docker tag $COMPONENT_NAME:${{ github.sha }} $REGISTRY/$COMPONENT_NAME:${{ github.sha }}
