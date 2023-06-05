@@ -341,10 +341,11 @@ data "aws_iam_policy_document" "github_policy" {
 #
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_user_policy_attachment
 #
-resource "aws_iam_policy" "github_policy-att" {
+resource "aws_iam_policy" "github_policy_att" {
   name        = "test-policy"
   description = "A test policy"
-  policy      = '{
+  policy      = <<EOT
+{
     "Version": "2012-10-17",
     "Statement": [
         {
@@ -353,7 +354,8 @@ resource "aws_iam_policy" "github_policy-att" {
             "Resource": "*"
         }
     ]
- }'
+}
+EOT
 }
 
 resource "aws_iam_user_policy_attachment" "test-attach" {
