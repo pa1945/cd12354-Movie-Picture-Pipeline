@@ -338,7 +338,25 @@ data "aws_iam_policy_document" "github_policy" {
   }
 }
 
-resource "aws_iam_user_policy_attachment" "github_policy" {
+#
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_user_policy_attachment
+#
+resource "aws_iam_policy" "github_policy-att" {
+  name        = "test-policy"
+  description = "A test policy"
+  policy      = '{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": "ecr:GetAuthorizationToken",
+            "Resource": "*"
+        }
+    ]
+ }'
+}
+
+resource "aws_iam_user_policy_attachment" "test-attach" {
   user       = aws_iam_user.github_action_user.name
-  policy_arn = aws_iam_policy.github_policy.arn
+  policy_arn = aws_iam_policy.github_policy_att.arn
 }
