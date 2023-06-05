@@ -30,8 +30,8 @@ env:
   DEPLOY: frontend
   #
   #EKS_CLUSTER_NAME: cluster
-  CLUSTER: pafcluster-mov-pic
-  #CLUSTER: cluster
+  #CLUSTER: pafcluster-mov-pic
+  CLUSTER: cluster
   #
   #SHA7: ${GITHUB_SHA:0:7}
 
