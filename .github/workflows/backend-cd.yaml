@@ -173,7 +173,13 @@ jobs:
           #kubectl get services -o wide
           kubectl rollout status deployment/$DEPLOY
           #
+          echo "--- Confirm communication with the cluster  ---"
+          kubectl get svc
           # Checking the resources in the Kubernetes cluster.
+          echo "kubectl get nodes"
           kubectl get nodes # Get the list of nodes in the cluster
+          echo "--- kubectl get services ---"
           kubectl get services
+          echo "--- kubectl get pods ---"
           kubectl get pods
+          

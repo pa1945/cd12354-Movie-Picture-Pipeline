@@ -199,10 +199,12 @@ jobs:
           #kubectl rollout status deployment/$DEPLOYMENT_NAME
           #kubectl rollout status deployment/frontend
           kubectl rollout status deployment/$DEPLOY
+          echo "--- Confirm communication with the cluster  ---"
+          kubectl get svc
           # Checking the resources in the Kubernetes cluster.
           echo "kubectl get nodes"
           kubectl get nodes # Get the list of nodes in the cluster
-          echo "kubectl get services"
+          echo "--- kubectl get services ---"
           kubectl get services
-          echo "kubectl get pods"
+          echo "--- kubectl get pods ---"
           kubectl get pods
