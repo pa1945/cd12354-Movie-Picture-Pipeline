@@ -20,8 +20,8 @@ env:
   #DEPLOYMENT_NAME: backend
   DEPLOY: backend-cd
   #EKS_CLUSTER_NAME: cluster-mov-pic
-  #CLUSTER: cluster-mov-pic
-  CLUSTER: cluster
+  CLUSTER: cluster-mov-pic
+  #CLUSTER: cluster
 
 jobs:
   lint:
