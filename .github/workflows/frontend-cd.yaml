@@ -168,8 +168,8 @@ jobs:
           #docker tag $COMPONENT_NAME:${GITHUB_SHA:0:7} $REGISTRY/$COMPONENT_NAME:${GITHUB_SHA:0:7}
           #docker push $REGISTRY/$COMPONENT_NAME:${GITHUB_SHA:0:7}
           # Have been published ?
-          echo "--- docker search ---"
-          docker search --limit 3 $COMPONENT_NAME:${{ github.sha }}
+          #echo "--- docker search ---"
+          #docker search --limit 3 $COMPONENT_NAME:${{ github.sha }}
           echo "--- docker images ---"
           docker images
           echo "--- TESTING_VAR: ---"
