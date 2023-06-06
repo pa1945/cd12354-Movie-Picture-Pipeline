@@ -144,6 +144,7 @@ jobs:
           #docker push $REGISTRY/$COMPONENT_NAME:${GITHUB_SHA::7}
           echo "--- docker tag image  ---"
           docker tag $COMPONENT_NAME:${ github.sha } $REGISTRY/$COMPONENT_NAME:${{ github.sha }}
+          echo "--- docker push image  ---"          
           docker push $REGISTRY/$COMPONENT_NAME:${{ github.sha }}
           #
           #- name: AI: Push Docker image to ECR

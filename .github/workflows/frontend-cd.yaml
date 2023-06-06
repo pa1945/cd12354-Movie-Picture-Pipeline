@@ -153,12 +153,18 @@ jobs:
           #docker search --limit 3 mp-frontend
           #XX docker search --limit 3 $COMPONENT_NAME:${{ github.sha }}
           # Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
-          #? Is it necessary this when the build was in this workflow?
+          # It necessary this even  when the build was in this workflow.
+          # Otherwise we may get:
+          # The push refers to repository [***.dkr.ecr.***.amazonaws.com/frontend]
+          # An image does not exist locally with the tag: ***.dkr.ecr.***.amazonaws.com/frontend
+          #
           echo "--- docker tag image  ---"
           docker tag $COMPONENT_NAME:${{ github.sha }} $REGISTRY/$COMPONENT_NAME:${{ github.sha }}
           #
+          echo "--- docker push image  ---"          
           #docker push <username>/<image_name>
           docker push $REGISTRY/$COMPONENT_NAME:${{ github.sha }}
+          #
           #docker tag $COMPONENT_NAME:${GITHUB_SHA:0:7} $REGISTRY/$COMPONENT_NAME:${GITHUB_SHA:0:7}
           #docker push $REGISTRY/$COMPONENT_NAME:${GITHUB_SHA:0:7}
           # Have been published ?
