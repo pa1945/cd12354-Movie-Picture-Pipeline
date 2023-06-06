@@ -142,13 +142,14 @@ jobs:
         run: |
           #docker tag $COMPONENT_NAME:${GITHUB_SHA::7} $REGISTRY/$COMPONENT_NAME:${GITHUB_SHA::7}
           #docker push $REGISTRY/$COMPONENT_NAME:${GITHUB_SHA::7}
+          echo "--- docker tag image  ---"
           docker tag $COMPONENT_NAME:${ github.sha } $REGISTRY/$COMPONENT_NAME:${{ github.sha }}
           docker push $REGISTRY/$COMPONENT_NAME:${{ github.sha }}
-
-      #- name: AI: Push Docker image to ECR
-      #  run: |
-      #    docker tag your-docker-repo/frontend:${{ github.sha }} your-aws-account-number.dkr.ecr.your-aws-region.amazonaws.com/frontend:${{ github.sha }}
-      #    docker push your-aws-account-number.dkr.ecr.your-aws-region.amazonaws.com/frontend:${{ github.sha }}
+          #
+          #- name: AI: Push Docker image to ECR
+          #  run: |
+          #    docker tag your-docker-repo/frontend:${{ github.sha }} your-aws-account-number.dkr.ecr.your-aws-region.amazonaws.com/frontend:${{ github.sha }}
+          #    docker push your-aws-account-number.dkr.ecr.your-aws-region.amazonaws.com/frontend:${{ github.sha }}
 
       - name: Authenticate with Kubernetes - Create Kubeconfig Auth file
         run: |
