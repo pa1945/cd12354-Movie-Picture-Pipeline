@@ -314,7 +314,7 @@ resource "aws_iam_role_policy_attachment" "codebuild" {
 # Github Action role
 ####################
 #https://faun.pub/aws-iam-user-and-policy-creation-using-terraform-7cd781e06c97
-# Create IAM user 'github-action-user' using terraform
+#
 resource "aws_iam_user" "github_action_user" {
   name = "github-action-user"
 }
@@ -342,10 +342,9 @@ data "aws_iam_policy_document" "github_policy" {
 #
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_user_policy_attachment
 #
-#resource "aws_iam_policy" "github_policy_att" {
-resource "aws_iam_policy" "github_policy" {
-  name        = "test-policy"
-  description = "A test policy"
+resource "aws_iam_policy" "github_policy_att" {
+  name        = "github-att-policy"
+  description = "Github action attach policy"
   policy      = <<EOT
 {
     "Version": "2012-10-17",
@@ -360,7 +359,7 @@ resource "aws_iam_policy" "github_policy" {
 EOT
 }
 
-resource "aws_iam_user_policy_attachment" "github_policy" {
+resource "aws_iam_user_policy_attachment" "test-attach" {
   user       = aws_iam_user.github_action_user.name
-  policy_arn = aws_iam_policy.github_policy.arn
+  policy_arn = aws_iam_policy.github_policy_att.arn
 }
