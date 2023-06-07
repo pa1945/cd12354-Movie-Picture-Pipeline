@@ -20,8 +20,8 @@ env:
   #DEPLOYMENT_NAME: backend
   DEPLOY: backend-cd
   #EKS_CLUSTER_NAME: cluster-mov-pic
-  #CLUSTER: pafcluster-mov-pic   # Defined in 'main.tf'
-  CLUSTER: cluster
+  #CLUSTER: pafcluster-mov-pic   # 'cluster' Defined in 'main.tf'
+  CLUSTER: clusterpaf1945
 
 jobs:
   lint:
