@@ -319,18 +319,6 @@ resource "aws_iam_user" "github_action_user" {
   name = "github-action-user"
 }
 
-# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_user_policy1
-# Provides an IAM policy attached to a user.
-#
-resource "aws_iam_user_policy" "github_action_user_permission" {
-  user   = aws_iam_user.github_action_user.name
-  policy = data.aws_iam_policy_document.github_policy.json
-}
-
-# https://registry.terraform.io/providers/aaronfeng/aws/latest/docs/data-sources/iam_policy_document
-# Generates an IAM policy document in JSON format for use with resources that 
-#  expect policy documents such as `aws_iam_policy`.
-# 
 data "aws_iam_policy_document" "github_policy" {
   statement {
     effect    = "Allow"
@@ -339,27 +327,12 @@ data "aws_iam_policy_document" "github_policy" {
   }
 }
 
-#
-# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_user_policy_attachment
-#
-resource "aws_iam_policy" "github_policy_att" {
-  name        = "github-att-policy"
-  description = "Github action attach policy"
-  policy      = <<EOT
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": "ecr:GetAuthorizationToken",
-            "Resource": "*"
-        }
-    ]
-}
-EOT
+resource "aws_iam_policy" "github_policy" {
+  name   = "github-policy"
+  policy = data.aws_iam_policy_document.github_policy.json
 }
 
-resource "aws_iam_user_policy_attachment" "test-attach" {
+resource "aws_iam_user_policy_attachment" "github_policy" {
   user       = aws_iam_user.github_action_user.name
-  policy_arn = aws_iam_policy.github_policy_att.arn
+  policy_arn = aws_iam_policy.github_policy.arn
 }
