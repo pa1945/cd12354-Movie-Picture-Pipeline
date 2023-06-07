@@ -342,7 +342,8 @@ data "aws_iam_policy_document" "github_policy" {
 #
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_user_policy_attachment
 #
-resource "aws_iam_policy" "github_policy_att" {
+#resource "aws_iam_policy" "github_policy_att" {
+resource "aws_iam_policy" "github_policy" {
   name        = "test-policy"
   description = "A test policy"
   policy      = <<EOT
@@ -359,7 +360,7 @@ resource "aws_iam_policy" "github_policy_att" {
 EOT
 }
 
-resource "aws_iam_user_policy_attachment" "test-attach" {
+resource "aws_iam_user_policy_attachment" "github_policy" {
   user       = aws_iam_user.github_action_user.name
-  policy_arn = aws_iam_policy.github_policy_att.arn
+  policy_arn = aws_iam_policy.github_policy.arn
 }
