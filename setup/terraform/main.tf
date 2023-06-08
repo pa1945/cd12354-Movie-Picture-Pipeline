@@ -332,6 +332,10 @@ resource "aws_iam_policy" "github_policy" {
   policy = data.aws_iam_policy_document.github_policy.json
 }
 
+# attach policy
+#
+# https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_user_policy_attachment
+#
 resource "aws_iam_user_policy_attachment" "github_policy" {
   user       = aws_iam_user.github_action_user.name
   policy_arn = aws_iam_policy.github_policy.arn
