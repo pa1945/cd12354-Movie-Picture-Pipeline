@@ -16,7 +16,9 @@ on:
 
 env:
   #IMAGE_NAME: backend
-  COMPONENT_NAME: backend-cd
+  COMPONENT_NAME: backend
+  # 'backend' defined in 'main.tf'
+  #resource "aws_ecr_repository" "backend"
   #DEPLOYMENT_NAME: backend
   DEPLOY: backend-cd
   #EKS_CLUSTER_NAME: cluster-mov-pic
