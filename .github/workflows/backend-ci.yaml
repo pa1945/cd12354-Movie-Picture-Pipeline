@@ -18,11 +18,10 @@ on:
     types: [opened, reopened]
 
 env:
-  #IMAGE_NAME: backend
-  COMPONENT_NAME: backend-ci
   #
-  #SHA7: ${GITHUB_SHA:0:7}
-  #SHA8: GITHUB_SHA:0:7
+  COMPONENT_NAME: backend
+  # 'backend' defined in 'main.tf'
+  #resource "aws_ecr_repository" "backend"
 
 jobs:
   lint-bci:
@@ -104,7 +103,6 @@ jobs:
           #
           echo GITHUB_SHA: "${GITHUB_SHA}"
           #echo GITHUB_SHA: "${GITHUB_SHA:0:7}"
-          #echo SHA8: $SHA8
           #echo "--- docker search ---"
           #docker search --limit 3 $COMPONENT_NAME:${{ github.sha }}
           #
