@@ -13,7 +13,8 @@ on:
     branches: [main]
     #  - main
     paths:
-      - 'backend/**'       # ? - 'frontend/**'
+      - 'backend/**'
+    # ? - 'frontend/**'
     # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request
     types: [opened, reopened]
 

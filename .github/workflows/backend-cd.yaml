@@ -15,13 +15,10 @@ on:
     types: [opened, reopened]
 
 env:
-  #IMAGE_NAME: backend
   COMPONENT_NAME: backend
   # 'backend' defined in 'main.tf'
   #resource "aws_ecr_repository" "backend"
-  #DEPLOYMENT_NAME: backend
   DEPLOY: backend
-  #EKS_CLUSTER_NAME: cluster-mov-pic
   #CLUSTER: pafcluster-mov-pic   # 'cluster' Defined in 'main.tf'
   CLUSTER: clusterpaf1945
 
@@ -126,10 +123,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ vars.AWS_DEFAULT_REGION }}
-          #aws-region: ${{ secrets.AWS_REGION }}
-          #aws-region: ${{ vars.AWS_REGION }}
-          #aws-region: us-east-1
-          #Alternaiv: us-east-2, us-west-1 or us-west-2.
+          #Alternativ: us-east-2, us-west-1 or us-west-2.
 
 
       - name: Login to Amazon ECR Private
@@ -142,8 +136,6 @@ jobs:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          #docker tag $COMPONENT_NAME:${GITHUB_SHA::7} $REGISTRY/$COMPONENT_NAME:${GITHUB_SHA::7}
-          #docker push $REGISTRY/$COMPONENT_NAME:${GITHUB_SHA::7}
           echo "--- docker tag image  ---"
           docker tag $COMPONENT_NAME:${{ github.sha }} $REGISTRY/$COMPONENT_NAME:${{ github.sha }}
           echo "--- docker push image  ---"          
@@ -168,7 +160,6 @@ jobs:
           # Check that kubectl is properly configured by getting the cluster state:
           kubectl cluster-info
           kubectl config view   #Display the contents of the kubeconfig file
-          #kustomize edit set image backend=$REGISTRY/$COMPONENT_NAME:${GITHUB_SHA::7}
           kustomize edit set image backend=$REGISTRY/$COMPONENT_NAME:${{ github.sha }}
           kustomize build . | kubectl apply -f -
           # check if the Deployment was created.
@@ -187,4 +178,3 @@ jobs:
           kubectl get services
           echo "--- kubectl get pods ---"
           kubectl get pods
-          

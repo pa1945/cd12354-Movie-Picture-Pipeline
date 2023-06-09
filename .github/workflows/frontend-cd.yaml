@@ -26,11 +26,11 @@ env:
   COMPONENT_NAME: frontend
   #
   # https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
-  #DEPLOYMENT_NAME: frontend
+  # Defined in 'main.tf'
+  #resource "aws_ecr_repository" "frontend"
   DEPLOY: frontend
   #
-  #EKS_CLUSTER_NAME: cluster
-  #CLUSTER: pafcluster-mov-pic  # 'cluster' Defined in 'main.tf'
+  #CLUSTER: 'cluster' Defined in 'main.tf'
   CLUSTER: clusterpaf1945
   #
   #SHA7: ${GITHUB_SHA:0:7}
@@ -135,8 +135,6 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ vars.AWS_DEFAULT_REGION }}         
-          #aws-region: ${{ secrets.AWS_REGION }}         
-          #aws-region: ${{ vars.AWS_REGION }}
           #aws-region: us-east-1
           #Alternaiv: us-east-2, us-west-1 or us-west-2.
 
@@ -153,7 +151,7 @@ jobs:
           #docker search --limit 3 mp-frontend
           #XX docker search --limit 3 $COMPONENT_NAME:${{ github.sha }}
           # Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
-          # It necessary this even  when the build was in this workflow.
+          # It is necessary, even when the build was in this workflow.
           # Otherwise we may get:
           # The push refers to repository [***.dkr.ecr.***.amazonaws.com/frontend]
           # An image does not exist locally with the tag: ***.dkr.ecr.***.amazonaws.com/frontend
@@ -184,7 +182,6 @@ jobs:
         run: |
           kubectl config view   # Display the contents of the kubeconfig file
           aws eks update-kubeconfig --name $CLUSTER --region ${{ vars.AWS_DEFAULT_REGION }}
-          #aws eks update-kubeconfig --name $CLUSTER --region ${{ vars.AWS_REGION }}
           kubectl config view   #Display the contents of the kubeconfig file
 
       - name: Deploy the Docker image to AWS Kubernetes cluster - EKS
