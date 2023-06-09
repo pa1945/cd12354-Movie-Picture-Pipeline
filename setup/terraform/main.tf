@@ -314,11 +314,12 @@ resource "aws_iam_role_policy_attachment" "codebuild" {
 # Github Action role
 ####################
 #https://faun.pub/aws-iam-user-and-policy-creation-using-terraform-7cd781e06c97
-#
+# Create user 'github-action-user'
 resource "aws_iam_user" "github_action_user" {
   name = "github-action-user"
 }
 
+# Define policy
 data "aws_iam_policy_document" "github_policy" {
   statement {
     effect    = "Allow"
