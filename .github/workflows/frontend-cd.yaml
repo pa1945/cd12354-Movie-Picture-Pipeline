@@ -130,8 +130,8 @@ jobs:
           # Tagging an image just creates an alias to an image name or an imageId.
           # The frontend should be able to pull the list of movies and verifies the 
           # environment variable was passed correctly)
-          echo "--- Running curl ${REACT_APP_MOVIE_API_URL} ---"
-          curl ${REACT_APP_MOVIE_API_URL}
+          #echo "--- Running curl ${REACT_APP_MOVIE_API_URL} ---"
+          #curl ${REACT_APP_MOVIE_API_URL}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
