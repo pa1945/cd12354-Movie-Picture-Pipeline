@@ -121,7 +121,15 @@ jobs:
           echo "--- docker images ---"
           docker images
           echo "--- docker build ---"
-          docker build --tag $COMPONENT_NAME:${{ github.sha }} .
+          #docker build --tag $COMPONENT_NAME:${{ github.sha }} .
+          #
+          docker build --tag $COMPONENT_NAME:${{ github.sha }} \
+            --build-arg=REACT_APP_MOVIE_API_URL="http://$REACT_APP_MOVIE_API_URL" \
+            .
+          #docker build \
+          #  --build-arg=REACT_APP_MOVIE_API_URL="http://$REACT_APP_MOVIE_API_URL" \
+          #  -t $COMPONENT_NAME:${GITHUB_SHA::7} .
+          #
           echo "--- docker images ---"
           docker images
           # Already declared inside the Dockerfile
