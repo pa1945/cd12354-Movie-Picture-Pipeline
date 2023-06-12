@@ -17,3 +17,9 @@ variable "private_az" {
   description = "Change this to a letter a-f only if you encounter an error during setup"
   default     = "b"
 }
+
+variable "eks_cluster_name_uda" {
+  type        = string
+  description = "Udacity cluster name"
+  default     = "clusterpaf1945"
+}

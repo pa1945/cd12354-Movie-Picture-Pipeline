@@ -141,7 +141,8 @@ resource "aws_ecr_repository" "backend" {
 ################
 # Create an EKS cluster
 resource "aws_eks_cluster" "main" {
-  name     = "clusterpaf1945"
+  #name     = "cluster"
+  name     = var.eks_cluster_name_uda
   version  = var.k8s_version
   role_arn = aws_iam_role.eks_cluster.arn
   vpc_config {
