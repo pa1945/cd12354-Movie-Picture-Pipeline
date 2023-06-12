@@ -113,7 +113,7 @@ jobs:
       - name: Build docker image
         env:
           REACT_APP_MOVIE_API_URL: ${{ vars.REACT_APP_MOVIE_API_URL }}
-          # REACT_APP_MOVIE_API_URL=http://localhost:5000
+          # REACT_APP_MOVIE_API_URL=http://localhost:5000 or 3000
         run: |
           #echo SHA7: "${SHA7}"
           echo GITHUB_SHA: "${GITHUB_SHA}"
@@ -140,6 +140,8 @@ jobs:
           # environment variable was passed correctly)
           #echo "--- Running curl ${REACT_APP_MOVIE_API_URL} ---"
           #curl ${REACT_APP_MOVIE_API_URL}
+          # Check the running local application
+          #curl http://localhost:5000/movies
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2

@@ -320,6 +320,11 @@ resource "aws_iam_user" "github_action_user" {
 }
 
 # Define policy
+# A policy is an object in AWS that defines permissions.
+# https://registry.terraform.io/providers/aaronfeng/aws/latest/docs/data-sources/iam_policy_document
+# Generates an IAM policy document in JSON format for use with resources that 
+#  expect policy documents such as `aws_iam_policy`.
+#
 data "aws_iam_policy_document" "github_policy" {
   statement {
     effect    = "Allow"
@@ -334,7 +339,7 @@ resource "aws_iam_policy" "github_policy" {
 }
 
 # attach policy
-#
+#  A policy is an object in AWS that defines permissions.
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_user_policy_attachment
 #
 resource "aws_iam_user_policy_attachment" "github_policy" {
