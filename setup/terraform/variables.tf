@@ -23,3 +23,16 @@ variable "eks_cluster_name_uda" {
   description = "Udacity cluster name"
   default     = "clusterpaf1945"
 }
+
+variable "repo_frontend" {
+  type        = string
+  description = "GitHub frontend folder"
+  default     = "frontend"
+}
+
+
+variable "repo_backend" {
+  type        = string
+  description = "GitHub backend folder"
+  default     = "backend"
+}

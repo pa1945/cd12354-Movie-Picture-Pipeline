@@ -117,7 +117,8 @@ resource "aws_vpc_endpoint" "ecr-api-endpoint" {
 # ECR Repositories
 ###################
 resource "aws_ecr_repository" "frontend" {
-  name                 = "frontend"
+  #name                 = "frontend"
+  name                 = var.repo_frontend
   image_tag_mutability = "MUTABLE"
   force_delete         = true
 
@@ -127,7 +128,8 @@ resource "aws_ecr_repository" "frontend" {
 }
 
 resource "aws_ecr_repository" "backend" {
-  name                 = "backend"
+  #name                 = "backend"
+  name                 = var.repo_backend
   image_tag_mutability = "MUTABLE"
   force_delete         = true
 
@@ -339,7 +341,7 @@ resource "aws_iam_policy" "github_policy" {
   policy = data.aws_iam_policy_document.github_policy.json
 }
 
-# attach policy
+# attach policy or, alternatively setup on AWS console
 #  A policy is an object in AWS that defines permissions.
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_user_policy_attachment
 #
